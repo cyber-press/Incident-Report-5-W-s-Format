@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inter-Con Incident Report</title>
+  <meta name="theme-color" content="#0B1220" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="brand">
+      <div class="badge" aria-hidden="true">IC</div>
+      <div class="brandText">
+        <div class="brandTitle">INTER-CON SECURITY</div>
+        <div class="brandSub">Incident Report • 5 W’s Format</div>
+      </div>
+    </div>
+
+    <div class="actions" role="group" aria-label="Export actions">
+      <button class="btn ghost" id="btnSaveDraft" type="button">Save Draft</button>
+      <button class="btn" id="btnPdf" type="button">Save PDF</button>
+      <button class="btn" id="btnJpg" type="button">Save JPEG</button>
+      <button class="btn ghost" id="btnEmail" type="button">Email to Me</button>
+          <button id="btnCopy" class="btn btn-secondary" type="button" aria-label="Copy full report text">Copy Text</button>
+          <button id="btnNotesMode" class="btn btn-secondary" type="button" aria-haspopup="dialog" aria-controls="notesModal">Notes Mode</button>
+    </div>
+  </header>
+
+  <main class="container" id="captureRoot">
+    <section class="card">
+      <h2>Report Details</h2>
+      <div class="grid3">
+        <label class="field">
+          <span>Site Name</span>
+          <input id="site_name" autocomplete="off" />
+        </label>
+        <label class="field">
+          <span>Date</span>
+          <div class="fieldRow"><input id="date" inputmode="numeric" placeholder="MM/DD/YYYY" / type="date"><button class="mini-btn" type="button" data-today="date" aria-label="Set today\'s date">Today</button></div>
+        </label>
+        <label class="field">
+          <span>Time</span>
+          <input id="time" inputmode="numeric" placeholder="HH:MM" / type="time">
+        </label>
+      </div>
+      <div class="grid2">
+        <label class="field">
+          <span>Officer Name</span>
+          <input id="officer_name" autocomplete="name" />
+        </label>
+        <label class="field">
+          <span>Post / Shift</span>
+          <input id="post_shift" autocomplete="off" />
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Supervisor Notification</h2>
+      <div class="grid2">
+        <label class="field">
+          <span>Supervisor Contacted (Name)</span>
+          <input id="supervisor_contacted_name" autocomplete="off" />
+        </label>
+        <label class="field">
+          <span>Time Contacted</span>
+          <input id="time_contacted" inputmode="numeric" placeholder="HH:MM" / type="time">
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="hrow">
+        <h2>WHO</h2>
+        <p class="hint">Names and roles only</p>
+      </div>
+      <label class="field">
+        <span>Persons Involved</span>
+        <textarea id="who_persons_involved" rows="4" placeholder="Example: Alice Smith (patient), Officer DiCaprio (responding officer)"></textarea>
+      </label>
+    </section>
+
+    <section class="card">
+      <div class="hrow">
+        <h2>WHAT</h2>
+        <p class="hint">Plain facts, no opinions</p>
+      </div>
+      <label class="field">
+        <span>What Happened</span>
+        <textarea id="what_happened" rows="6"></textarea>
+      </label>
+    </section>
+
+    <section class="card">
+      <div class="hrow">
+        <h2>WHERE</h2>
+        <p class="hint">Be specific: floor, suite, aisle</p>
+      </div>
+      <label class="field">
+        <span>Exact Location on Site</span>
+        <textarea id="where_location" rows="4"></textarea>
+      </label>
+    </section>
+
+    <section class="card">
+      <h2>WHEN</h2><div class="grid4">
+        <label class="field">
+          <span>Incident Occurred</span>
+          <input id="t_incident" inputmode="numeric" placeholder="HH:MM" />
+        </label>
+        <label class="field">
+          <span>Supervisor Contacted</span>
+          <input id="t_supervisor" inputmode="numeric" placeholder="HH:MM" />
+        </label>
+        <label class="field">
+          <span>EMS/Police Called</span>
+          <input id="t_called" inputmode="numeric" placeholder="HH:MM" />
+        </label>
+        <label class="field">
+          <span>EMS/Police Arrived</span>
+          <input id="t_arrived" inputmode="numeric" placeholder="HH:MM" />
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="hrow">
+        <h2>WHY</h2>
+        <p class="hint">If unknown, write “Undetermined”</p>
+      </div>
+      <label class="field">
+        <span>Cause of Incident</span>
+        <textarea id="why_cause" rows="4"></textarea>
+      </label>
+    </section>
+
+    <section class="card">
+      <div class="hrow">
+        <h2>ACTIONS TAKEN BY OFFICER</h2>
+        <p class="hint">Steps taken in order</p>
+      </div>
+      <label class="field">
+        <span>Actions Taken</span>
+        <textarea id="actions_taken" rows="6"></textarea>
+      </label>
+    </section>
+
+    <section class="card">
+      <h2>Signatures</h2>
+      <div class="grid3">
+        <label class="field">
+          <span>Officer Signature</span>
+          <input id="officer_signature" autocomplete="name" />
+        </label>
+        <label class="field">
+          <span>Date</span>
+          <div class="fieldRow"><input id="officer_sig_date" inputmode="numeric" placeholder="MM/DD/YYYY" / type="date"><button class="mini-btn" type="button" data-today="officer_sig_date" aria-label="Set today\'s date">Today</button></div>
+        </label>
+        <label class="field">
+          <span>Supervisor Signature</span>
+          <input id="supervisor_signature" autocomplete="off" />
+        </label>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <p>Designed for quick mobile reporting. Keep entries concise, factual, and time-stamped.</p>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Notes Mode Modal -->
+  <div id="notesModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="notesTitle" hidden>
+    <div class="modal-backdrop" data-close="1"></div>
+    <div class="modal-sheet" role="document">
+      <div class="modal-header">
+        <div>
+          <div id="notesTitle" class="modal-title">Notes Mode</div>
+          <div class="modal-sub">Clean DAR-ready template. Copy or share in one tap.</div>
+        </div>
+        <button class="icon-btn" type="button" id="btnNotesClose" aria-label="Close notes mode">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <label class="label" for="notesText">DAR Template</label>
+        <textarea id="notesText" class="textarea notes-text" readonly></textarea>
+        <div class="hint">Tip: Paste into your DAR system or Notes app. Exported files can still be attached if needed.</div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btnNotesCopy" class="btn btn-primary" type="button">Copy for DAR</button>
+        <button id="btnNotesShare" class="btn btn-secondary" type="button">Share</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
